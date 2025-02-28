@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations - CineVerse</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <span class="menu-icon" onclick="toggleMenu()">☰</span>
+        <h1>CineVerse</h1>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="/html/search.html"><span class="search-icon">🔍</span> Search</a>
+            <a href="recommendations.html">Recommendations</a>
+        </nav>
+    </header>    
+
+    <main>
+        <section id="recommendationSection">
+            <h2>Find Your Next Favorite Movie</h2>
+            <div class="recommendation-controls">
+                <button id="moodBtn" onclick="suggestMood()">Suggest a Mood</button>
+                <input type="text" id="preferenceInput" placeholder="Enter a genre or mood">
+                <button id="generateBtn" onclick="fetchRecommendations()">Generate</button>
+            </div>            
+            <h3>Movies</h3>
+            <div id="recommendedMovies" class="movies-grid"></div>
+            <h3>TV Series</h3>
+            <div id="recommendedSeries" class="movies-grid"></div>
+            <h3>Anime</h3>
+            <div id="recommendedAnime" class="movies-grid"></div>
+        </section>
+    </main>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

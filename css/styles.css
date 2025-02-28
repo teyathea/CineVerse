@@ -1,0 +1,318 @@
+/* Home Page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #141414;
+    color: white;
+    text-align: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #1c1c1c;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-menu a:hover {
+    color: #ff4500;
+}
+
+.search-icon {
+    font-size: 18px;
+}
+
+/* Hamburger Icon */
+.menu-icon {
+    display: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .menu-icon {
+        display: block;
+    }
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        background: #222;
+        width: 100%;
+        padding: 10px;
+    }
+    .nav-menu.active {
+        display: flex;
+    }
+}
+
+.top-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.reco-container {
+    width: 90%;
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.reco-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.surprise-btn {
+    background: #ff4500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.surprise-btn:hover {
+    background: #5681af;
+}
+
+.movies-grid {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.movie-card {
+    background: #222;
+    padding: 10px;
+    border-radius: 8px;
+    width: 120px;
+    text-align: center;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Movie Details Page */
+#movieDetails {
+    text-align: center;
+    padding: 20px;
+}
+
+#movieInfo {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 18px;
+}
+
+.trailer iframe {
+    width: 100%;
+    max-width: 700px;
+    height: 400px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.movies-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.movie-card {
+    background: #1c1c1c;
+    padding: 10px;
+    border-radius: 8px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer; 
+    transition: transform 0.2s ease-in-out;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #movieInfo {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .trailer iframe {
+        height: 250px;
+    }
+
+    .movie-card {
+        width: 120px;
+    }
+}
+
+/* Search Results */
+.movies-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.movie-card {
+    background: #1c1c1c;
+    padding: 10px;
+    border-radius: 8px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.search-btn-search:hover {
+    background: #5681af;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #searchBox {
+        width: 90%;
+    }
+
+    .movie-card {
+        width: 120px;
+    }
+}
+
+/* Recommendation Page */
+.recommendation-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#preferenceInput {
+    padding: 10px;
+    width: 50%;
+    max-width: 350px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+
+.recommendation-controls button {
+    padding: 10px 15px;
+    background: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.recommendation-controls button:hover {
+    background: #5681af;
+}
+
+#generateBtn {
+    background: #28a745;
+}
+
+#moodBtn {
+    background: #6a0dad;
+}
+
+.movies-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.movie-card {
+    background: #1c1c1c;
+    padding: 10px;
+    border-radius: 8px;
+    width: 150px;
+    text-align: center;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .recommendation-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #preferenceInput {
+        width: 90%;
+    }
+
+    .movies-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .movie-card {
+        width: 120px;
+    }
+}

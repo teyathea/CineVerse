@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - CineVerse</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <span class="menu-icon" onclick="toggleMenu()">☰</span>
+        <h1>CineVerse</h1>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="/html/search.html"><span class="search-icon">🔍</span> Search</a>
+            <a href="recommendations.html">Recommendations</a>
+        </nav>
+    </header>    
+
+    <main>
+        <h2>Search Movies & TV Series</h2>
+        <div class="search-container">
+            <input type="text" id="searchBox" placeholder="Search for a movie or TV series...">
+            <button id="searchBtn">Search</button>
+        </div>
+        <h3>Results</h3>
+        <div id="searchResults" class="movies-grid"></div>
+    </main>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
