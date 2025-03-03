@@ -1,3 +1,47 @@
+///////// API Keys Handling /////////
+let apiKeysLoaded = false;
+let TMDB_API_KEY = "";
+let OPENAI_API_KEY = "";
+
+// Fetch API keys from Netlify function
+async function fetchAPIKeys() {
+    try {
+        const response = await fetch("/.netlify/functions/getKeys");
+        if (!response.ok) throw new Error("Failed to fetch API keys");
+        const data = await response.json();
+        TMDB_API_KEY = data.TMDB_API_KEY;
+        OPENAI_API_KEY = data.OPENAI_API_KEY;
+        apiKeysLoaded = true;
+        console.log("API Keys Loaded Successfully");
+    } catch (error) {
+        console.error("Error fetching API keys:", error);
+    }
+}
+
+// Ensures API calls wait until keys are loaded
+async function ensureKeysLoaded() {
+    if (!apiKeysLoaded) {
+        await fetchAPIKeys();
+    }
+}
+
+// Usage Example: Wrap API calls inside ensureKeysLoaded()
+async function searchByTitle(title) {
+    await ensureKeysLoaded(); // Ensure keys are ready before calling API
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}`
+        );
+        const data = await response.json();
+        displayResults(data.results);
+    } catch (error) {
+        console.error("Error fetching title search results:", error);
+    }
+}
+
+// Call fetchAPIKeys() at the start of the script
+fetchAPIKeys();
+
 ///////// Home Page Script /////////
 // Toggle Navigation Menu
 function toggleMenu() {
@@ -160,7 +204,6 @@ function goToDetails(movieId, type = 'movie') {
 }
 
 ///////// Details Page Script /////////
-
 // Redirect when a movie is clicked
 function goToDetails(movieId, type = 'movie') {
     if (!movieId) return;
@@ -262,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchBtn.addEventListener("click", handleSearch);
-    searchBox.addEventListener("keypress", function (event) {
+    searchBox.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             handleSearch();
         }
@@ -368,7 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
         searchResultsContainer.innerHTML = "";
 
         if (!results || results.length === 0) {
-            searchResultsContainer.innerHTML = "<p>No results found.</p>";
+            searchResultsContainer.innerHTML = "<p>No results found. Try a different search.</p>";
             return;
         }
 
@@ -414,6 +457,8 @@ const moodToGenreMap = {
 
 // Function to extract mood from user input using OpenAI API
 async function extractMoodFromInput(userInput) {
+    await ensureKeysLoaded(); // Ensure API key is available
+
     try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
@@ -433,10 +478,48 @@ async function extractMoodFromInput(userInput) {
         const data = await response.json();
         let extractedMood = data.choices[0].message.content.trim();
 
-        return moodToGenreMap[extractedMood] ? extractedMood : getRandomMood(); // Ensure it's a valid mood
+        if (!moodToGenreMap[extractedMood]) {
+            extractedMood = await suggestClosestMood(extractedMood); // Find closest match
+        }
+
+        return extractedMood;
     } catch (error) {
         console.error("Error extracting mood:", error);
-        return getRandomMood(); // Use fallback list if AI fails
+        return getRandomMood(); // Fallback list if AI fails
+    }
+}
+
+// Function to find the closest mood match from moodToGenreMap
+async function suggestClosestMood(userMood) {
+    await ensureKeysLoaded(); // Ensure API key is available
+
+    const availableMoods = Object.keys(moodToGenreMap);
+    try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4-turbo",
+                messages: [{
+                    role: "user",
+                    content: `Given the available moods: ${availableMoods.join(", ")}. Which one is the closest match to "${userMood}"? Return only the best matching mood.`
+                }],
+                temperature: 0.7
+            })
+        });
+
+        if (!response.ok) throw new Error("OpenAI API request failed");
+
+        const data = await response.json();
+        let suggestedMood = data.choices[0].message.content.trim();
+
+        return moodToGenreMap[suggestedMood] ? suggestedMood : getRandomMood(); // Ensure valid mood
+    } catch (error) {
+        console.error("Error suggesting closest mood:", error);
+        return getRandomMood(); // Fallback if AI fails
     }
 }
 
