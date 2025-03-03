@@ -25,20 +25,6 @@ async function ensureKeysLoaded() {
     }
 }
 
-// Usage Example: Wrap API calls inside ensureKeysLoaded()
-async function searchByTitle(title) {
-    await ensureKeysLoaded(); // Ensure keys are ready before calling API
-    try {
-        const response = await fetch(
-            `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}`
-        );
-        const data = await response.json();
-        displayResults(data.results);
-    } catch (error) {
-        console.error("Error fetching title search results:", error);
-    }
-}
-
 // Call fetchAPIKeys() at the start of the script
 fetchAPIKeys();
 
@@ -50,13 +36,10 @@ function toggleMenu() {
 }
 
 // Ensure the page loads with data
-document.addEventListener("DOMContentLoaded", function () {
-    if (typeof TMDB_API_KEY === "undefined") {
-        console.error("TMDB_API_KEY is not defined. Make sure config.js is loaded.");
-        return;
-    }
-    
-    console.log("Fetching initial data...");
+document.addEventListener("DOMContentLoaded", async function () {
+    await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
+    console.log("API Keys Loaded, Fetching Data...");
     fetchTrendingMovies();
     fetchRandomMovies();
     fetchRecommendationOfTheDay();
@@ -64,6 +47,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Fetch Trending Movies
 async function fetchTrendingMovies() {
+    await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
     try {
         const response = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
         const data = await response.json();
@@ -87,6 +72,8 @@ async function fetchTrendingMovies() {
 
 // Fetch Random Movies
 async function fetchRandomMovies() {
+    await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
     console.log("Fetching new random movies...");
     try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`);
@@ -133,6 +120,8 @@ async function fetchRandomMovies() {
 
 // Fetch Recommendation of the Day (Movie, Series, Anime)
 async function fetchRecommendationOfTheDay() {
+    await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
     console.log("Fetching recommendation of the day...");
     const recoContainer = document.getElementById("recommendationOfTheDay");
     if (!recoContainer) {
@@ -330,6 +319,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function searchByTitle(title) {
+        await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
         try {
             const response = await fetch(
                 `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}`
@@ -342,6 +333,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function searchByMood(mood) {
+        await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
         try {
             console.log(`Fetching AI suggestions for mood: ${mood}`);
 
@@ -359,6 +352,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function fetchMoviesFromAI(mood) {
+        await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
         try {
             console.log(`Fetching AI suggestions for mood: ${mood}`);
 
@@ -390,6 +385,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function fetchMovieDetailsFromTMDb(movieTitles) {
+        await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
         const movieDetails = [];
         for (const title of movieTitles) {
             try {
@@ -519,12 +516,14 @@ async function suggestClosestMood(userMood) {
         return moodToGenreMap[suggestedMood] ? suggestedMood : getRandomMood(); // Ensure valid mood
     } catch (error) {
         console.error("Error suggesting closest mood:", error);
-        return getRandomMood(); // Fallback if AI fails
+        return getRandomMood(); // Fallback lists if AI fails
     }
 }
 
 // Function to fetch recommendations based on mood/genre
 async function fetchRecommendations() {
+    await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
     const inputField = document.getElementById("preferenceInput");
     if (!inputField) {
         console.error("Error: preferenceInput element not found!");
@@ -575,6 +574,8 @@ async function fetchRecommendations() {
 
 // Function to suggest a random mood using OpenAI or fallback list
 async function suggestMood() {
+    await ensureKeysLoaded(); // Ensure keys are ready before calling API
+
     const inputField = document.getElementById("preferenceInput");
     if (!inputField) {
         console.error("Error: preferenceInput element not found!");
